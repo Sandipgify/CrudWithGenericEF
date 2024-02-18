@@ -46,11 +46,11 @@ namespace GenericRepositoryWithEF.Data.Repository
 
         public async Task SaveAsync()
         {
-           await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
     }
 
-    public class ReadOnlyRepository<T>: IReadOnlyRepository<T> where T : class
+    public class ReadOnlyRepository<T> : IReadOnlyRepository<T> where T : class
     {
         private readonly DbContext _dbContext;
 
@@ -61,7 +61,7 @@ namespace GenericRepositoryWithEF.Data.Repository
         public async Task<T> Get(Func<T, bool> predicate = null, CancellationToken cancellationToken = default)
         {
             IQueryable<T> query = _dbContext.Set<T>();
-            if(predicate is not null)
+            if (predicate is not null)
             {
                 query.Where(predicate).AsQueryable();
             }
@@ -82,10 +82,9 @@ namespace GenericRepositoryWithEF.Data.Repository
             IQueryable<T> query = _dbContext.Set<T>();
             if (predicate != null)
             {
-                query = query.Where(predicate).AsQueryable();
+                query.Where(predicate).AsQueryable();
             }
             return await query.AsNoTracking().AnyAsync(cancellationToken);
-
         }
     }
 }
